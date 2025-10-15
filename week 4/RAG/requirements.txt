@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+python-multipart
+sentence-transformers
+faiss-cpu
+python-dotenv
+pydantic
+aiofiles
+requests
+nltk

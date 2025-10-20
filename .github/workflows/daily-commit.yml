@@ -1,0 +1,35 @@
+name: Daily Commit
+
+on:
+  schedule:
+    # Run daily at 15:05 IST (specific hour and minute)
+    - cron: '35 9 * * *'
+  workflow_dispatch: {}
+
+jobs:
+  make-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true # so the GITHUB_TOKEN can be used to push
+          fetch-depth: 0
+
+      - name: Configure git for actions
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Create commit 24f3001383@ds.study.iitm.ac.in
+        # This step's name intentionally contains the required email string
+        run: |
+          echo "Run timestamp: $(date -u +"%Y-%m-%dT%H:%M:%SZ")" >> daily-commit.txt
+          git add daily-commit.txt
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: daily automated commit - $(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+            # push back to the current branch; uses the token provided to actions/checkout
+            git push origin HEAD:${{ github.ref_name }}
+          fi

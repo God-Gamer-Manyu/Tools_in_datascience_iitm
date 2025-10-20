@@ -1,9 +1,12 @@
 name: Daily Commit
 
+permissions:
+  contents: write
+
 on:
   schedule:
-    # Run daily at 15:05 IST (specific hour and minute)
-    - cron: '35 9 * * *'
+    # Run daily at 15:05 IST (specific minute and hour)
+    - cron: '50 9 * * *'
   workflow_dispatch: {}
 
 jobs:

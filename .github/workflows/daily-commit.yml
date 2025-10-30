@@ -5,7 +5,7 @@ permissions:
 
 on:
   schedule:
-    # Run daily at 15:05 IST (specific minute and hour)
+    # Run daily at 15:20 IST (specific minute and hour) or (09:50 UTC)
     - cron: '50 9 * * *'
   workflow_dispatch: {}
 

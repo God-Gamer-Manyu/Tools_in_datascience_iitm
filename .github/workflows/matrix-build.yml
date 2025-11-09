@@ -1,0 +1,44 @@
+name: Matrix build and artifact upload (build-8485aeb)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main, main ]
+
+jobs:
+  build:
+    name: Build (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: matrix-8485aeb
+        run: echo "Building for ${{ matrix.os }}"
+
+      - name: Generate build artifact (Unix)
+        if: runner.os != 'Windows'
+        run: |
+          echo "Build output for ${{ matrix.os }} (run ${GITHUB_RUN_ID})" > build-8485aeb-${{ matrix.os }}.txt
+          echo "Metadata: event=${{ github.event_name }}, sha=${{ github.sha }}" >> build-8485aeb-${{ matrix.os }}.txt
+
+      - name: Generate build artifact (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          "Build output for ${{ matrix.os }} (run $env:GITHUB_RUN_ID)" | Out-File -FilePath build-8485aeb-${{ matrix.os }}.txt -Encoding utf8
+          "Metadata: event=${{ github.event_name }}, sha=${{ github.sha }}" | Out-File -FilePath build-8485aeb-${{ matrix.os }}.txt -Encoding utf8 -Append
+
+      - name: List artifact file
+        run: |
+          ls -la build-8485aeb-${{ matrix.os }}.txt || dir build-8485aeb-${{ matrix.os }}.txt
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-8485aeb-${{ matrix.os }}
+          path: build-8485aeb-${{ matrix.os }}.txt

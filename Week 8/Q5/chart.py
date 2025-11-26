@@ -38,9 +38,12 @@ sns.set_style('whitegrid')
 sns.set_context('talk', font_scale=0.9)
 palette = sns.color_palette('Set2')
 
-# Draw violinplot
-plt.figure(figsize=(8, 8))  # 8in * 64dpi = 512px
-ax = sns.violinplot(
+# Create figure with explicit DPI so figsize * dpi = exact pixels (8in * 64dpi = 512px)
+fig, ax = plt.subplots(figsize=(8, 8), dpi=64)
+fig.patch.set_facecolor('white')
+
+# Draw violinplot on the explicit axes
+sns.violinplot(
     data=df,
     x='Team',
     y='ResolutionTime',
@@ -49,27 +52,27 @@ ax = sns.violinplot(
     cut=0,
     inner='quartile',
     bw=.2,
-    dodge=True
+    dodge=True,
+    ax=ax
 )
 
 # Improve y-axis scale for interpretability
 ax.set_yscale('log')
 ax.set_ylabel('Resolution Time (minutes, log scale)')
 ax.set_xlabel('Support Team')
-plt.title('Support Resolution Time Distribution by Team and Priority')
+ax.set_title('Support Resolution Time Distribution by Team and Priority')
 
 # Tidy up legend
-plt.legend(title='Priority')
+ax.legend(title='Priority')
 
-# Add a horizontal line for a target SLA (e.g., 60 minutes)
-plt.axhline(60, color='gray', linestyle='--', linewidth=1)
-plt.text(0.02, 60 * 1.05, 'SLA = 60 min', color='gray', fontsize=10)
+# Add a horizontal line for a target SLA (e.g., 60 minutes) and annotate using axes coordinates
+ax.axhline(60, color='gray', linestyle='--', linewidth=1)
+ax.text(0.02, 0.97, 'SLA = 60 min', color='gray', fontsize=10, transform=ax.transAxes, va='top')
 
 plt.tight_layout()
 
-# Save with exactly 512x512 pixels using 64 dpi
-plt.savefig('chart.png', dpi=64, bbox_inches='tight')
-plt.close()
+# Save with exact pixels: fig size (inches) * dpi => pixels. Avoid bbox_inches='tight' which crops padding.
+fig.savefig('chart.png', dpi=64)
+plt.close(fig)
 
-# Optionally print confirmation
-print('chart.png generated (512x512 expected at dpi=64).')
+print('chart.png generated (exact 512x512 pixels expected).')

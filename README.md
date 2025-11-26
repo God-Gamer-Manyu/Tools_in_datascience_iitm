@@ -61,6 +61,6 @@ This will create an `outputs` folder with `trend_vs_target.png`, `forecast.png`,
 
 **Contact / verification**
 
-24f3001383@ds.study.iitm.ac.in
+24f3001383@ds.study.iitm.ac.in - Rtamanyu N J
 
 If you want, I can open a PR with these files, attach the generated images directly to the PR description, or extend the analysis with a short pilot plan and a richer forecasting model (e.g., Prophet or SARIMA). 

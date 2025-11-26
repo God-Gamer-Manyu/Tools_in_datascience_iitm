@@ -5,8 +5,15 @@ import numpy as np
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-import seaborn as sns
 from matplotlib.colors import LinearSegmentedColormap
+
+# Try to import seaborn, but fall back to matplotlib if unavailable
+try:
+    import seaborn as sns
+    _HAS_SEABORN = True
+except Exception:
+    sns = None
+    _HAS_SEABORN = False
 
 here = os.path.dirname(os.path.abspath(__file__))
 excel_path = os.path.join(here, 'q-excel-correlation-heatmap.xlsx')
@@ -81,17 +88,39 @@ csv_path = os.path.join(here, 'correlation.csv')
 corr.to_csv(csv_path, index=True)
 print('Saved correlation CSV to', csv_path)
 
-# Create heatmap PNG
+# Create heatmap PNG (ensure output is smaller than 512x512 pixels)
 png_path = os.path.join(here, 'heatmap.png')
 # Create red-white-green colormap
-cmap = LinearSegmentedColormap.from_list('red_white_green', ['#b2182b','#f7f7f7','#2166ac'])
-plt.figure(figsize=(6,6))
-sns.set(style='white')
-ax = sns.heatmap(corr, annot=True, fmt='.2f', cmap=cmap, vmin=-1, vmax=1, square=True, cbar_kws={'shrink':0.8}, linewidths=0.5, linecolor='gray')
+cmap = LinearSegmentedColormap.from_list('red_white_green', ['#b2182b', '#ffffff', '#1a9629'])
+
+# Target pixel size (max 512). We'll use 500x500 to be safely under 512.
+pixel_size = 500
+dpi = 100
+figsize_inches = (pixel_size / dpi, pixel_size / dpi)
+
+plt.figure(figsize=figsize_inches)
+if _HAS_SEABORN:
+    sns.set(style='white')
+    ax = sns.heatmap(corr, annot=True, fmt='.2f', cmap=cmap, vmin=-1, vmax=1, square=True,
+                     cbar_kws={'shrink': 0.8}, linewidths=0.5, linecolor='gray')
+else:
+    # Fallback: use matplotlib imshow and annotate values
+    ax = plt.gca()
+    im = ax.imshow(corr.values, cmap=cmap, vmin=-1, vmax=1)
+    # Annotations
+    for (i, j), val in np.ndenumerate(corr.values):
+        ax.text(j, i, f"{val:.2f}", ha='center', va='center', color='black', fontsize=8)
+    # Tick labels
+    ax.set_xticks(range(len(corr.columns)))
+    ax.set_yticks(range(len(corr.index)))
+    ax.set_xticklabels(corr.columns, rotation=45, ha='right')
+    ax.set_yticklabels(corr.index)
+    plt.colorbar(im, fraction=0.046, pad=0.04)
+
 plt.title('Correlation Heatmap')
 plt.tight_layout()
-plt.savefig(png_path, dpi=96)  # 6in * 96 dpi = 576 px -> will be around 576x576
+plt.savefig(png_path, dpi=dpi)
 plt.close()
-print('Saved heatmap PNG to', png_path)
+print('Saved heatmap PNG to', png_path, '(size <= {}x{} pixels)'.format(pixel_size, pixel_size))
 
 print('Done')

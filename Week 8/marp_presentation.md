@@ -49,7 +49,7 @@ _A concise Marp demo with custom theme, math, and background image._
 
 
 
-![bg](background.jpg)
+![bg](Background.jpg)
 
 ## Example: Algorithm Complexity
 

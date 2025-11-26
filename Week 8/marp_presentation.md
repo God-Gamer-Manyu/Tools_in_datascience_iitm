@@ -47,9 +47,9 @@ _A concise Marp demo with custom theme, math, and background image._
 
 ---
 
-<!-- backgroundImage: url('Background.jpg') -->
-<!-- backgroundSize: cover -->
-<!-- backgroundPosition: center -->
+
+
+![bg](background.jpg)
 
 ## Example: Algorithm Complexity
 

@@ -7,6 +7,7 @@ app = marimo.App(width="medium")
 @app.cell
 def _():
     # this cell runs first
+    # hi
     # 24f3001383@ds.study.iitm.ac.in
     import marimo as mo
     x = 1
@@ -17,6 +18,8 @@ def _():
     #  - `x`: a simple value (here `1`) that is passed as an argument to the next cell.
     # The returned tuple (`mo, x`) is provided as parameters to the subsequent @app.cell
     # functions by the marimo runtime in execution order.
+
+    # added some more coments to explain data flow
 
     return mo, x
 

@@ -35,6 +35,7 @@ h1 { color: var(--accent); font-size: 2.4rem; }
 # Tools in Data Science
 
 _A concise Marp demo with custom theme, math, and background image._
+<!-- _backgroundColor: #123456 -->
 
 ---
 

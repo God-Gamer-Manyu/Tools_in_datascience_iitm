@@ -7,6 +7,8 @@
   <link rel="stylesheet" href="https://unpkg.com/reveal.js/dist/reveal.css">
   <link rel="stylesheet" href="https://unpkg.com/reveal.js/dist/theme/solarized.css" id="theme">
   <link rel="stylesheet" href="https://unpkg.com/reveal.js/plugin/highlight/monokai.css">
+  <!-- Fallback / explicit Highlight.js styles to ensure visible code highlighting -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/monokai.min.css">
 </head>
 <body>
   <div class="reveal">
@@ -119,6 +121,15 @@ Invite questions and repeat contact information.
         smartypants: true
       }
     });
+
+    // When Reveal is ready, also run Highlight.js on any code blocks as a fallback
+    Reveal.on('ready', () => {
+      if (window.hljs && typeof hljs.highlightAll === 'function') {
+        hljs.highlightAll();
+      }
+    });
   </script>
+  <!-- Include Highlight.js (non-module) as a reliable fallback for code highlighting -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
 </body>
 </html>

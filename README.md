@@ -1,4 +1,53 @@
-**Equipment Efficiency — 2024 Quarterly Analysis**
+# Tools in Data Science (IIT Madras): Coursework & Projects
+
+Assignments and mini-projects for **Tools in Data Science (TDS)** in the IIT Madras BS in Data Science program. The work covers the full data-science toolchain: APIs and serverless deployment, data cleaning and transformation, SQL analytics with DuckDB/SQLite, geospatial and network analysis, visualisation, presentations-as-code, and CI automation with GitHub Actions.
+
+---
+
+## 📂 Contents
+
+| Folder | Topics |
+|---|---|
+| `Week 2/Vercel_deployement/` | Serverless Python API on **Vercel** (`api/index.py`, NumPy-based stats, CORS headers in `vercel.json`) |
+| `Week3/` | LLM-assisted development: a chat web app built with GitHub Copilot (HTML/CSS/JS) and a prime-number utility |
+| `Week 6/` | **Data preparation**: cleaning incident logs, flattening nested JSONL, sensor roll-ups, Excel operational metrics, supplier-spend cleanup (OpenRefine-style), shell-log parsing, image forensics / reconstruction, YouTube clip transcription, JS cohort and inventory analyses |
+| `Week 7/` | **Data analysis**: SQL scripts on SQLite and **DuckDB** (category benchmarking, margins, lift), cohort retention, channel conversion uplift, **geospatial** proximity checks, **network centrality** (Python) |
+| `Week 8/` | **Data visualisation & storytelling**: correlation heatmaps, chart generation and resizing, a **Marimo** reactive notebook, **Marp** and **Reveal.js** slide decks |
+| `ROE/` | **FastAPI** service exposing `GET /stats` (count / avg / min / max) over a time-series CSV with caching |
+| `docs/` | Static site and slides published with **GitHub Pages** |
+| `efficiency_analysis.py` | Equipment-efficiency trend analysis and linear forecast (see below) |
+| `.github/workflows/` | **GitHub Actions**: scheduled daily-commit workflow and cross-OS **matrix build** |
+
+---
+
+## 🏗️ Architecture & Concepts
+
+**Concepts:** REST APIs (FastAPI) · serverless deployment (Vercel) · data cleaning & wrangling (pandas, regex, JSON/JSONL flattening) · **SQL analytics** (DuckDB, SQLite, DBeaver) · cohort & funnel analysis · geospatial distance calculations · graph/network centrality · linear regression forecasting · data visualisation (Matplotlib, Seaborn) · reactive notebooks (Marimo) · slides-as-code (Marp, Reveal.js) · CI/CD & scheduled automation (GitHub Actions cron, OS matrix) · static hosting (GitHub Pages) · LLM-assisted coding
+
+## ⚙️ Getting Started
+
+```bash
+git clone https://github.com/God-Gamer-Manyu/Tools_in_datascience_iitm.git
+cd Tools_in_datascience_iitm
+python -m venv .venv
+.venv\Scripts\activate          # macOS/Linux: source .venv/bin/activate
+pip install pandas numpy matplotlib seaborn scikit-learn
+```
+
+**FastAPI stats service (`ROE/`)**
+```bash
+cd ROE
+pip install -r requirements.txt
+uvicorn app:app --reload        # → http://127.0.0.1:8000/stats
+```
+
+Each weekly script is self-contained. Run it with `python <script>.py` from inside its folder, so it finds its input files there.
+
+---
+
+## 📈 Featured Analysis
+
+### Equipment Efficiency — 2024 Quarterly Analysis
 
 - **Dataset:** Quarterly equipment efficiency rates for 2024: `Q1: 69.77`, `Q2: 73.33`, `Q3: 76.05`, `Q4: 76.16`.
 - **Average:** 73.83
